@@ -236,5 +236,65 @@ public class ShipmentService {
                         clientId,
                         pageable);
     }
+    public Shipment updateClientShipment(
 
+            Long shipmentId,
+
+            Shipment updatedShipment) {
+
+        Shipment shipment =
+                shipmentRepository.findById(
+                                shipmentId)
+                        .orElse(null);
+
+        if (shipment == null) {
+            return null;
+        }
+
+        shipment.setShipmentType(
+                updatedShipment.getShipmentType());
+
+        shipment.setOriginCountry(
+                updatedShipment.getOriginCountry());
+
+        shipment.setDestinationCountry(
+                updatedShipment.getDestinationCountry());
+
+        shipment.setPickupAddress(
+                updatedShipment.getPickupAddress());
+
+        shipment.setDeliveryAddress(
+                updatedShipment.getDeliveryAddress());
+
+        shipment.setItemName(
+                updatedShipment.getItemName());
+
+        shipment.setQuantity(
+                updatedShipment.getQuantity());
+
+        shipment.setWeight(
+                updatedShipment.getWeight());
+
+        shipment.setTransportMode(
+                updatedShipment.getTransportMode());
+
+        return shipmentRepository.save(shipment);
+    }
+
+    public String deleteClientShipment(
+            Long shipmentId) {
+
+        Shipment shipment =
+                shipmentRepository.findById(
+                                shipmentId)
+                        .orElse(null);
+
+        if (shipment == null) {
+            return "Shipment not found";
+        }
+
+        shipmentRepository.delete(shipment);
+
+        return "Shipment deleted successfully";
+    }
 }

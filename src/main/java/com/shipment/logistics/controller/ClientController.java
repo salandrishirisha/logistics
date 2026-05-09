@@ -51,4 +51,26 @@ public class ClientController {
                         page,
                         size);
     }
+
+    @PutMapping("/update-shipment/{shipmentId}")
+    public Shipment updateShipment(
+
+            @PathVariable Long shipmentId,
+
+            @RequestBody Shipment shipment) {
+
+        return shipmentService
+                .updateClientShipment(
+                        shipmentId,
+                        shipment);
+    }
+
+    @DeleteMapping("/delete-shipment/{shipmentId}")
+    public String deleteShipment(
+            @PathVariable Long shipmentId) {
+
+        return shipmentService
+                .deleteClientShipment(
+                        shipmentId);
+    }
 }
