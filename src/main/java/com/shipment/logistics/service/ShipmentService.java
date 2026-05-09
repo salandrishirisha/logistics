@@ -5,7 +5,9 @@ import com.shipment.logistics.entity.Shipment;
 import com.shipment.logistics.entity.User;
 import com.shipment.logistics.repository.ShipmentRepository;
 import com.shipment.logistics.repository.UserRepository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -226,14 +228,13 @@ public class ShipmentService {
             int page,
             int size) {
 
-        User client =
-                userRepository.findById(clientId)
-                        .orElse(null);
-
         Pageable pageable =
                 PageRequest.of(page, size);
 
         return shipmentRepository
-                .findByClient(client, pageable);
+                .findByClient_UserId(
+                        clientId,
+                        pageable);
     }
+
 }

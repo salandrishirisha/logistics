@@ -22,6 +22,10 @@ public interface ShipmentRepository
             User employee,
             Pageable pageable);
 
+
+    Page<Shipment> findByClient_UserId(
+            Long clientId,
+            Pageable pageable);
     long countByStatus(String status);
 
     long countByClient(User client);
@@ -44,4 +48,15 @@ public interface ShipmentRepository
     long countByClientNameAndStatus(String clientName, String pending);
 
     long countByClientName(String clientName);
+
+    long countByClient_UserId(Long clientId);
+
+    long countByClient_UserIdAndStatus(
+            Long clientId,
+            String status);
+
+
+    long countByAssignedEmployee_UserIdAndStatus(Long employeeId, String assigned);
+
+    long countByAssignedEmployee_UserId(Long employeeId);
 }

@@ -9,7 +9,9 @@ public class DashboardResponse {
     private long approvedShipments;
 
     private long deliveredShipments;
+    private long employeeCount;
 
+    private long clientCount;
     public DashboardResponse() {
     }
 
@@ -43,5 +45,21 @@ public class DashboardResponse {
 
     public void setDeliveredShipments(long deliveredShipments) {
         this.deliveredShipments = deliveredShipments;
+    }
+
+    public long getEmployeeCount() {
+        return employeeCount;
+    }
+
+    public void setEmployeeCount(long employeeCount) {
+        this.employeeCount = employeeCount;
+    }
+
+    public long getClientCount() {
+        return clientCount;
+    }
+
+    public void setClientCount(long clientCount) {
+        this.clientCount = clientCount;
     }
 }
