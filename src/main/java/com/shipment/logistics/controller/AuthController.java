@@ -1,11 +1,13 @@
 package com.shipment.logistics.controller;
 
+import com.shipment.logistics.dto.AuthResponse;
 import com.shipment.logistics.dto.LoginRequest;
 import com.shipment.logistics.entity.Role;
 import com.shipment.logistics.entity.User;
 import com.shipment.logistics.service.AuthService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,38 +19,47 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public User register(
+    public ResponseEntity<?> register(
             @RequestBody User user) {
 
-        return authService.register(user);
+        if (user.getRole() == null) {
+
+            user.setRole(Role.CLIENT);
+        }
+
+        User savedUser =
+                authService.register(user);
+
+        return new ResponseEntity<>(
+                savedUser,
+                HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public Object login(
+    public ResponseEntity<?> login(
             @RequestBody LoginRequest request) {
 
-        User user = authService.login(request);
+        String token =
+                authService.login(request);
 
-        if (user != null) {
-            return user;
+        if (token == null) {
+
+            return new ResponseEntity<>(
+                    "Invalid email or password",
+                    HttpStatus.UNAUTHORIZED);
         }
 
-        return "Invalid credentials";
-    }
+        User user =
+                authService.getUserByEmail(
+                        request.getEmail());
 
-    @PostMapping("/create-admin")
-    public User createAdmin() {
+        AuthResponse response =
+                new AuthResponse(
+                        token,
+                        user.getRole().name(),
+                        user.getUserId(),
+                        user.getName());
 
-        User admin = new User();
-
-        admin.setName("Admin");
-
-        admin.setEmail("admin@gmail.com");
-
-        admin.setPassword("admin123");
-
-        admin.setRole(Role.ADMIN);
-
-        return authService.register(admin);
+        return ResponseEntity.ok(response);
     }
 }
