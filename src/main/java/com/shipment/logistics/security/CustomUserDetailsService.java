@@ -22,8 +22,8 @@ public class CustomUserDetailsService
             throws UsernameNotFoundException {
 
         User user =
-                userRepository.findByEmail(email);
-
+                userRepository.findByEmail(email)
+                        .orElse(null);
         if (user == null) {
 
             throw new UsernameNotFoundException(
